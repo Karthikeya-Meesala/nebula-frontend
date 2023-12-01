@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { useEffect, useState } from "react";
+import nebula_logo from "../assets/nebula_logo.svg";
 
 import Cards from "./Cards";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +10,7 @@ import { setFormData } from "../features/formSlice";
 function HeroContainer() {
   const [data, setData] = useState(false);
   const [url, setUrl] = useState(
-    "https://docs.google.com/forms/d/e/1FAIpQLSfTNu7YzgCtHyLS9xZaxd-MIWp4aR9-oKIaZdAr71zAOLp2uA/viewform"
+    ""
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,7 @@ function HeroContainer() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/?url=${url}`);
+      const response = await axios.get(`https://web-production-b2e5.up.railway.app//?url=${url}`);
       const result = response.data;
       console.log(result);
       setData(true);
@@ -40,64 +41,55 @@ function HeroContainer() {
   };
 
   return (
-    <div className="h-screen  smooth w-full flex flex-col ">
-      <nav className="m-0 text-3xl py-2 px-8 relative font-extrabold font-mono text-center bg-white border border-gray-300 rounded-lg shadow-lg tracking-widest">
-        <div className="container mx-auto">
-          <span className="text-xl font-bold">PROJECT NEBULA</span>
-        </div>
-      </nav>
-      <div
-        //add image here for home's background
-        // style={{
-        //   backgroundImage: `url(${nebulaImage})`,
-        //   backgroundSize: "cover",
-        // }}
-        className="flex-grow heroDiv h-auto  bg-white flex flex-col flex-wrap justify-center items-center bg-cover"
-      >
-        <h1 className="text-white text-focus-in md:text-5xl mb-16">
-          Let us do the magic for you
-        </h1>
+    <div className="flex flex-col ">
 
-        <form
-          className="flex  w-full justify-center  transform  hover:scale-105
-          transition duration-500 items-center"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex w-2/3 shadow-2xl  shadow-slate-400 ">
-            <input
-              type="text"
-              className="w-full px-4  text-gray-500 py-2 text-blue rounded-l-lg  border-none text-xl text-gray-700 border-gray-300 focus:outline-none focus:border-blue-500"
-              placeholder="Enter Google Form URL..."
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="bg-white border text-black border-gray-300 text-slate-800 px-10 py-2 border  rounded-r-lg   hover:outline-slate-500"
-            >
-              Do Magic!!
-            </button>
-          </div>
-        </form>
-        {isLoading && (
-          <p className=" text-xl bg-white border text-black border-gray-300 rounded-lg hover:outline-slate-500 m-2 p-5 ">
-            Loading...
-          </p>
-        )}
-        {isError && (
-          <p className=" bg-white text-xl border text-black border-gray-300 rounded-lg hover:outline-slate-500 m-2 p-5 ">
-            Error: Unable to fetch data
-          </p>
-        )}
+          <nav className="m-8 py-2 px-8 font-sans text-center bg-gray-900 rounded-2xl">
+            <div className="flex grid-cols-4 justify-between mx-auto text-lg font-medium text-gray-50">
+              <div> <img src={nebula_logo} className="w-8 rotate"></img></div>
+              <div className="font-bold text-2xl text-slate-500"> Nebula </div>
+              {/*  <div className="bg-gray-50 text-gray-950 rounded-md basis-1/3"> Dashboard </div>
+              <div className="bg-gray-200 text-gray-900 rounded-md basis-1/3"> Account </div> */}
+              <div className="rounded-full w-4 h-4 border border-red-900 text-red-900 text-center text-xs mt-2"> i </div>
+            </div>
+          </nav>
 
-        {/* Display the data when not loading and no error */}
-        {!isLoading && !isError && data && (
-          <div className="fade-in show ">
-            <Cards />
-          </div>
-        )}
+          <div className="flex flex-col flex-wrap justify-center items-center m-20">
+              <h1 className="text-gray-900 font-bold md:text-4xl mb-16 text-gradient">
+                Let us do the magic for you.
+              </h1>
+
+              <form className="flex w-full justify-center items-center" onSubmit={handleSubmit} >
+                <div className="flex gap-4">
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 text-sm rounded-lg bg-slate-100 text-gray-700 border border-transparent	focus:border-red-900"
+                    placeholder="paste your google form url here"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
+                  <button type="submit" className= "text-white bg-gray-900 rounded-lg text-sm font-bold w-36"> 
+                  do magic. </button>
+                </div>
+              </form>
+
+              {isLoading && (
+                  <p className=" text-xl bg-white border text-black border-gray-300 rounded-lg hover:outline-slate-500 m-2 p-5 ">
+                    Loading...
+                  </p>
+                )}
+              {isError && (
+                <p className=" bg-white text-xl border text-red-400 border-gray-300 rounded-lg hover:outline-slate-500 m-2 p-5 ">
+                  Error: Unable to fetch data
+                </p>
+                )}
+
+              {!isLoading && !isError && data && (
+                <div className="fade-in show ">
+                  <Cards />
+                </div>
+                )}
+            </div>
       </div>
-    </div>
   );
 }
 

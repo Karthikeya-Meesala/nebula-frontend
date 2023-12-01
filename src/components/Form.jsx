@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import nebula from "../assets/nebula.png";
+import nebula_logo from "../assets/nebula_logo.svg";
 import fetchData from "../api/api";
 
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -10,6 +10,8 @@ import { clearFormData, setFormData } from "../features/formSlice";
 import MultipleChoice from "./InputComponents/MultipleChoice";
 import InputSelect from "./InputComponents/InputSelect";
 import CheckBoxes from "./InputComponents/CheckBoxes";
+import DropDown from "./InputComponents/DropDown";
+import LinearScaleComponent from "./InputComponents/LinearScale";
 
 function Form() {
   const initialFormData = {};
@@ -65,16 +67,7 @@ function Form() {
   const formActionURL = `https://docs.google.com/forms/d/${formData.Action}/formResponse`;
 
   const bgColor = [
-    "red",
-    "purple",
-    "green",
-    "teal",
-    "blue",
-    "lime",
-    "lime",
-    "pink",
-    "teal",
-    "orange",
+    "white"
   ];
 
   if (Object.keys(formData).length !== 0) {
@@ -245,16 +238,25 @@ function Form() {
                             );
                           // Continue with cases for 3 to 10
                           case 3:
-                            return <MultipleChoice />;
+                            return <DropDown options={field.Widgets[0].options} />;
                           case 4:
                             return (
                               <CheckBoxes options={field.Widgets[0].options} />
                             );
+                          case 5:
+                            return (
+                              <LinearScaleComponent options={field.Widgets[0].options} />
+                            )
 
                           case 10:
                             return <MultipleChoice />;
+                          case 11:
+                            return <ImageField />;
+                          case 12:
+                            return <VideoField />;
                           default:
                             return <MultipleChoice />;
+                          
                         }
                       })()}
                     </div>
@@ -285,7 +287,7 @@ function Form() {
               <span className="text-4xl border rotate-center rounded-full px-4 py-2 mr-1">
                 N
               </span>
-              Nebula Forms
+              {formData.Header}
             </div>
           </a>
           <button
